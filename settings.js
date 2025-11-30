@@ -6,8 +6,8 @@ const versionLabel = document.getElementById("versionLabel");
 
 // load saved settings
 chrome.storage.sync.get(["theme", "autoGenerateOnCopy"], (data) => {
-  themeSelect.value = data.theme || "system"; // デフォルトは system
-  autoGenToggle.checked = !!data.autoGenerateOnCopy;
+  themeSelect.value = data.theme || "dark"; // デフォルトは dark
+  autoGenToggle.checked = data.autoGenerateOnCopy === undefined ? true : !!data.autoGenerateOnCopy;
 });
 
 // save theme change
