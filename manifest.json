@@ -1,0 +1,40 @@
+{
+  "manifest_version": 3,
+  "name": "UUID Inserter (Full)",
+  "version": "1.2",
+  "description": "Generate, copy, store history and insert UUID v4. Settings, theme and Auto-Generate on Copy included.",
+  "permissions": [
+    "scripting",
+    "clipboardWrite",
+    "storage",
+    "activeTab"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "options_page": "settings.html",
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "UUID Inserter"
+  },
+  "commands": {
+    "insert_uuid": {
+      "description": "Insert UUID v4",
+      "suggested_key": {
+        "default": "Ctrl+Shift+U",
+        "mac": "Command+Shift+U"
+      }
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "<all_urls>"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ]
+}

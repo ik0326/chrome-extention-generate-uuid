@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>UUID Inserter Settings</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    body { font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial; padding:20px; background:#fafafa; color:#111; }
+    h1 { margin-top:0; font-size:18px; }
+    .row { margin-bottom:12px; }
+    label { display:block; font-size:13px; margin-bottom:6px; color:#333; }
+    select, input[type="checkbox"], button { padding:8px 10px; font-size:13px; }
+    .muted { color:#666; font-size:13px; }
+  </style>
+</head>
+<body>
+  <h1>UUID Inserter — Settings</h1>
+
+  <div class="row">
+    <label for="themeSelect">Theme</label>
+    <select id="themeSelect">
+      <option value="dark">Dark</option>
+      <option value="light">Light</option>
+      <option value="system" selected>System</option>
+    </select>
+    <div class="muted">System を選択すると OS のライト/ダークに自動追従します。</div>
+  </div>
+
+  <div class="row">
+    <label>
+      <input id="autoGenToggle" type="checkbox" />
+      Auto-generate new UUID on Copy
+    </label>
+    <div class="muted">Copy を押すと自動で新しい UUID を生成します。</div>
+  </div>
+
+  <div class="row">
+    <label>History</label>
+    <button id="clearHistoryBtn">Clear History</button>
+  </div>
+
+  <div class="row">
+    <label>Shortcut</label>
+    <div class="muted">ショートカットの変更は Chrome のショートカットページで行ってください。</div>
+    <button id="openShortcutsBtn">Open chrome://extensions/shortcuts</button>
+  </div>
+
+  <div class="row">
+    <label>Version</label>
+    <div id="versionLabel" class="muted"></div>
+  </div>
+
+  <script src="settings.js"></script>
+</body>
+</html>

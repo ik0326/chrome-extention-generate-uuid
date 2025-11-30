@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>UUID Inserter</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <style>
+    :root {
+      --bg: #111;
+      --text: #e6eef6;
+      --panel: #1a1a1a;
+      --accent: #0078d4;
+      --ok: #22c55e;
+      --muted: #9aa4b2;
+    }
+
+    body[data-theme="light"] {
+      --bg: #fdfdfd;
+      --text: #111;
+      --panel: #ffffff;
+      --accent: #0078d4;
+      --ok: #22c55e;
+      --muted: #666;
+    }
+
+    body[data-theme="dark"] {
+      --bg: #111;
+      --text: #e6eef6;
+      --panel: #1a1a1a;
+      --accent: #0078d4;
+      --ok: #22c55e;
+      --muted: #9aa4b2;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Arial;
+      width: 340px;
+      padding: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    h1 { margin:0 0 12px 0; font-size:16px; font-weight:600; text-align:center; }
+
+    .box {
+      background: var(--panel);
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255,255,255,0.03);
+      word-break: break-all;
+      text-align: center;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .controls { display:flex; gap:8px; margin-bottom:12px; }
+    button { flex:1; border:none; padding:10px 8px; border-radius:8px; cursor:pointer; font-size:13px; transition:.08s ease; }
+    button:active { transform: translateY(1px); }
+
+    .btn-regen { background: var(--panel); color: var(--text); border:1px solid rgba(255,255,255,0.03); }
+    .btn-copy  { background: var(--accent); color:white; }
+    .btn-insert{ background: var(--ok); color:white; }
+
+    .meta { display:flex; justify-content:space-between; align-items:center; gap:8px; font-size:12px; color: var(--muted); margin-bottom:8px; }
+    .history { max-height:160px; overflow:auto; padding:8px; background:linear-gradient(180deg, rgba(255,255,255,0.01), transparent); border-radius:8px; border:1px solid rgba(255,255,255,0.02); }
+    .history-item { padding:6px 8px; font-size:13px; border-radius:6px; display:flex; justify-content:space-between; align-items:center; gap:8px; margin-bottom:6px; background:transparent; }
+    .history-item button { padding:6px 8px; font-size:12px; border-radius:6px; }
+    .small { font-size:12px; color: var(--muted); }
+    .footer { margin-top:10px; display:flex; gap:8px; }
+    .link-btn { flex:1; background:transparent; border:1px solid rgba(255,255,255,0.04); color: var(--muted); padding:8px; border-radius:8px; font-size:12px; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>UUID v4 Tool</h1>
+    <div id="uuidBox" class="box">Generating...</div>
+
+    <div class="controls">
+      <button id="regenBtn" class="btn-regen">Regenerate</button>
+      <button id="copyBtn" class="btn-copy">Copy</button>
+      <button id="insertBtn" class="btn-insert">Insert</button>
+    </div>
+
+    <div class="meta">
+      <div id="shortcutLabel" class="small">Default Shortcut: —</div>
+      <div class="small" id="autoGenLabel">AutoGen on Copy: —</div>
+    </div>
+
+    <div>
+      <div class="small" style="margin-bottom:6px">History (recent)</div>
+      <div id="historyList" class="history"></div>
+    </div>
+
+    <div class="footer">
+      <button id="settingsBtn" class="link-btn">Settings</button>
+      <button id="shortcutsBtn" class="link-btn">Change Shortcut</button>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
