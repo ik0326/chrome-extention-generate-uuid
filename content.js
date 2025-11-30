@@ -38,7 +38,7 @@ chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
       }
     } catch (e) {
       // ignore insertion errors silently
-      console.error("UUID Generater content insertion error:", e);
+      console.error("UUID Generator content insertion error:", e);
     }
   }
 });

@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "UUID Generater",
+  "name": "UUID Generator",
   "version": "1.0",
   "description": "Generate, copy, store history and insert UUID v4. Settings, theme and Auto-Generate on Copy included.",
   "permissions": [
@@ -15,7 +15,7 @@
   "options_page": "settings.html",
   "action": {
     "default_popup": "popup.html",
-    "default_title": "UUID Generater"
+    "default_title": "UUID Generator"
   },
   "commands": {
     "insert_uuid": {
