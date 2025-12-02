@@ -4,7 +4,6 @@
   "version": "1.0",
   "description": "Generate, copy, store history and insert UUID v4. Settings, theme and Auto-Generate on Copy included.",
   "permissions": [
-    "scripting",
     "clipboardWrite",
     "storage",
     "activeTab"
