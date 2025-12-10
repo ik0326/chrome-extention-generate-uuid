@@ -58,7 +58,7 @@ function loadHistoryToUI() {
       div.className = "history-item";
       div.innerHTML = `
         <div style="flex:1; word-break: break-all;">${uuid}</div>
-        <button data-uuid="${uuid}" class="btn-copy-history" style="padding:6px 8px; font-size:12px; border-radius:6px; background:var(--panel); border:1px solid rgba(255,255,255,0.08); color:var(--text);">Copy</button>
+        <button data-uuid="${uuid}" class="btn-copy-history" style="width: 60px; padding:6px 8px; font-size:12px; border-radius:6px; background:var(--panel); border:1px solid rgba(255,255,255,0.08); color:var(--text);">Copy</button>
       `;
       historyList.appendChild(div);
     });
