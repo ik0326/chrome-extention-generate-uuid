@@ -67,12 +67,36 @@ function loadHistoryToUI() {
     document.querySelectorAll(".btn-copy-history").forEach(btn => {
       btn.addEventListener("click", async (e) => {
         const uuidToCopy = e.currentTarget.dataset.uuid;
+
+        // エラー抑制のため、e.currentTargetを明示的に取得
+        const targetButton = e.currentTarget;
+
         try {
           await navigator.clipboard.writeText(uuidToCopy);
-          e.currentTarget.textContent = "Copied!";
-          setTimeout(() => (e.currentTarget.textContent = "Copy"), 1200);
+
+          // ボタンフィードバックの追加と、TypeError対策のためのnullチェック
+          if (targetButton) {
+            targetButton.textContent = "Copied!";
+
+            setTimeout(() => {
+              // setTimeout内でも要素の存在を再確認
+              if (targetButton) {
+                targetButton.textContent = "Copy";
+              }
+            }, 200);
+          }
+
         } catch (err) {
-          console.error(err);
+          console.error("履歴コピー中にエラーが発生しました:", err);
+          // エラーが発生した場合も、可能であれば元に戻す
+          if (targetButton) {
+            targetButton.textContent = "Error";
+            setTimeout(() => {
+              if (targetButton) {
+                targetButton.textContent = "Copy";
+              }
+            }, 200);
+          }
         }
       });
     });
