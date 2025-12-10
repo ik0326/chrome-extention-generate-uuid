@@ -131,7 +131,7 @@ copyBtn.addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(currentUUID);
     copyBtn.textContent = "Copied!";
-    setTimeout(() => (copyBtn.textContent = "Copy"), 1200);
+    setTimeout(() => (copyBtn.textContent = "Copy"), 300);
 
     // Get setting and auto-generate new UUID
     chrome.storage.sync.get(["autoGenerateOnCopy"], (data) => {
@@ -158,18 +158,23 @@ insertBtn.addEventListener("click", async () => {
   // 1. アクティブなタブにUUIDを挿入するメッセージを送信
   const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
   if (!tabs || !tabs[0]) return;
-  chrome.tabs.sendMessage(tabs[0].id, { type: "insert_uuid", uuid: currentUUID });
+
+  // 【変更点】挿入するUUIDを変数に保持
+  const uuidToInsert = currentUUID;
+
+  chrome.tabs.sendMessage(tabs[0].id, { type: "insert_uuid", uuid: uuidToInsert });
 
   // 2. UIフィードバックの更新
   insertBtn.textContent = "Inserted!";
-  setTimeout(() => (insertBtn.textContent = "Insert"), 1200);
+  setTimeout(() => (insertBtn.textContent = "Insert"), 300);
 
-  // 3. 💡 新しいUUIDを生成し、表示を更新
-  regenerate();
-
-  // 4. 💡 履歴を保存し、リストを更新
-  await saveHistory(currentUUID);
+  // 3. 挿入に使ったUUIDを履歴に保存し、リストを更新
+  //    (コピーボタンのイベントで二重保存されるのを防ぐため、この処理は残す)
+  await saveHistory(uuidToInsert);
   loadHistoryToUI();
+
+  // 4. 次の操作のためにUUIDを生成（コピーボタンがこれを保存する）
+  regenerate();
 });
 
 shortcutsBtn.addEventListener("click", () => { chrome.tabs.create({ url: "chrome://extensions/shortcuts" }); });
