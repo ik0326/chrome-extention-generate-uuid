@@ -229,7 +229,7 @@ multiCopyAllBtn.addEventListener("click", async () => {
   try {
     await navigator.clipboard.writeText(textToCopy);
     multiCopyAllBtn.textContent = "Copied All!";
-    setTimeout(() => (multiCopyAllBtn.textContent = "Copy All"), 1200);
+    setTimeout(() => (multiCopyAllBtn.textContent = "Copy All"), 500);
   } catch (err) {
     console.error(err);
   }
