@@ -2,43 +2,70 @@
 // Listens to messages from background/popup and inserts UUID into focused element
 
 chrome.runtime.onMessage.addListener((msg, sender, sendResponse) => {
+  // メッセージの形式を確認
   if (msg && msg.type === "insert_uuid" && typeof msg.uuid === "string") {
+
+    let isInsertable = false;
+    let insertionSuccessful = false;
+
     try {
       const el = document.activeElement;
-      if (!el) return;
 
-      // Check if element is a textarea, input, or contentEditable
+      // 1. アクティブ要素がない場合はすぐに応答を返す
+      if (!el) {
+        sendResponse({ status: "failed", message: "No active element is focused." });
+        return;
+      }
+
+      // 要素のタイプをチェック
       const tag = el.tagName;
       const isInputOrTextarea = tag === "INPUT" || tag === "TEXTAREA";
       const isEditable = el.isContentEditable;
 
-      // --- 1. Use document.execCommand for contentEditable and general compatibility ---
-      // This is the most reliable way for rich text editors (like in Google Sheets)
+      // --- 2. ContentEditable要素の処理 ---
       if (isEditable) {
-        // Use insertText command for best compatibility
+        // execCommand はリッチテキスト編集で最も信頼性が高い
         document.execCommand("insertText", false, msg.uuid);
-        return;
+        isInsertable = true;
+        insertionSuccessful = true;
       }
 
-      // --- 2. Standard input/textarea handling ---
-      if (isInputOrTextarea) {
+      // --- 3. 標準の input/textarea の処理 ---
+      else if (isInputOrTextarea) {
+        isInsertable = true;
+
         const start = el.selectionStart ?? el.value.length;
         const end = el.selectionEnd ?? el.value.length;
         const value = el.value || "";
 
-        // Insert the UUID into the current value
+        // UUIDを現在のカーソル位置に挿入
         el.value = value.substring(0, start) + msg.uuid + value.substring(end);
 
-        // Move cursor after inserted uuid
+        // カーソルを挿入されたUUIDの直後に移動
         el.selectionStart = el.selectionEnd = start + msg.uuid.length;
 
-        // Dispatch input and change events so frameworks detect change
+        // イベントを発火させ、外部フレームワーク（React, Vueなど）に値の変更を検知させる
         el.dispatchEvent(new Event("input", { bubbles: true }));
-        el.dispatchEvent(new Event("change", { bubbles: true })); // Added change event
+        el.dispatchEvent(new Event("change", { bubbles: true }));
+
+        insertionSuccessful = true;
       }
+
+      // 4. 処理の完了応答
+      if (insertionSuccessful) {
+        sendResponse({ status: "success", message: "UUID inserted." });
+      } else if (isInsertable) {
+        // ここには到達しないはずだが、念のため成功として扱う
+        sendResponse({ status: "success", message: "Insertion handled (e.g., execCommand called)." });
+      } else {
+        // アクティブ要素はあるが、UUIDを挿入できない要素だった場合
+        sendResponse({ status: "failed", message: "Active element is not a supported input type." });
+      }
+
     } catch (e) {
-      // ignore insertion errors silently
+      // 5. 挿入処理中に予期せぬエラーが発生した場合の応答
       console.error("UUID Generator content insertion error:", e);
+      sendResponse({ status: "error", message: `Insertion failed: ${e.message}` });
     }
   }
 });
